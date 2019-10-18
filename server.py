@@ -7,7 +7,7 @@ import socket
 
 
 # Define socket host and port
-SERVER_HOST = '0.0.0.0'
+SERVER_HOST = '127.0.0.1'
 SERVER_PORT = 8000
 
 # Create socket
@@ -17,21 +17,18 @@ server_socket.bind((SERVER_HOST, SERVER_PORT))
 server_socket.listen(1)
 print('Listening on port %s ...' % SERVER_PORT)
 
-#######################################################
-while True:
 # Wait for client connections
+while True:
     client_connection, client_address = server_socket.accept()
-
     while True:
-# Print message from client
+        # Print message from client
         msg = client_connection.recv(1024).decode()
-        print('Received:', msg)
-        msgEco = "Recebido: " + msg
-        client_connection.send(msgEco.encode())
+        print('Received from',client_address,':', msg)
+        client_connection.sendall(msg.encode())
+
         if msg == "exit":
             break
-# Close client connection
-    client_connection.close()
-######################################################
+    # Close client connection
+client_connection.close()
 # Close socket
 server_socket.close()

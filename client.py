@@ -16,16 +16,15 @@ client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 # Connect to server
 client_socket.connect((SERVER_HOST, SERVER_PORT))
 
-#####################################
+# Send message
 while True:
-    # Send message
     msg = input("> ")
-    client_socket.send(msg.encode())
-    msgEco = client_socket.recv(1024).decode()
-    print('Received:', msgEco)
-    if msg == "exit":
-        break
-#####################################
+    client_socket.sendall(msg.encode())
 
+    if(msg == 'exit'):
+        break
+
+    msg = client_socket.recv(1024).decode()
+    print(SERVER_HOST+" > ", msg)
 # Close socket
 client_socket.close()
